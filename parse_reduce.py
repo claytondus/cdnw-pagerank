@@ -2,40 +2,25 @@
 
 #COSC 560 Assignment 3
 #PageRank
-#parse_map.py: Mapper for parse stage
+#parse_reduce.py: Reducer for parse stage
 
-import sys, re, string, os, codecs
-import xml.etree.ElementTree as ET
+import sys, re, string, os
 
-with codecs.open('simplewiki-latest-all-titles', encoding="utf-8") as titles_f:
-    titles = [x.strip() for x in titles_f.readlines()]
+current_title = ""
+links = list()
 
-inputstring = sys.stdin.read()
+for line in sys.stdin:
+    line = line.strip()
+    title, link = line.split('\t',1)
 
-#sys.stderr.write("<mediawiki>"+inputstring+"</mediawiki>")
-
-root = ET.fromstring("<mediawiki>"+inputstring+"</mediawiki>")
-
-
-for page in root.iter('page'):
-    titleElem = page.find('title')
-    if titleElem is not None:
-        title = unicode(string.replace(titleElem.text, " ", "_"))
+    if current_title == title:
+        links.append(link)
     else:
-        sys.stderr.write('title not found')
-        continue
-    textElem = page.find('revision/text')
-    if textElem is not None:
-        text = textElem.text
-    else:
-        sys.stderr.write('text not found')
-        continue
+        if current_title:
+            print(current_title+'\t1.0\t'+','.join(links))
+        links = list()
+        links.append(link)
+        current_title = title
 
-    if text is None:
-        sys.stderr.write('text is none for ' + title)
-        continue
-
-    for match in re.findall("\[\[(\S+)\]\]",text):
-        match_parts = re.split("\|",match)
-        if match_parts[0] in titles:
-            print("\t".join((title,match_parts[0])).encode('utf-8'))
+if current_title == title:
+    print(title+'\t1.0\t'+','.join(links))

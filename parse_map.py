@@ -8,7 +8,7 @@ import sys, re, string, os, codecs
 import xml.etree.ElementTree as ET
 
 with codecs.open('simplewiki-latest-all-titles', encoding="utf-8") as titles_f:
-    titles = [x.strip() for x in titles_f.readlines()]
+    titles = [x.strip().lower() for x in titles_f.readlines()]
 
 inputstring = sys.stdin.read()
 
@@ -37,5 +37,5 @@ for page in root.iter('page'):
 
     for match in re.findall("\[\[(\S+)\]\]",text):
         match_parts = re.split("\|",match)
-        if match_parts[0] in titles:
-            print("\t".join((title,match_parts[0])).encode('utf-8'))
+        if match_parts[0].lower() in titles:
+            print("\t".join((title.lower(),match_parts[0].lower())).encode('utf-8'))
