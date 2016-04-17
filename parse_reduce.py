@@ -23,4 +23,4 @@ for line in sys.stdin:
         current_title = title
 
 if current_title == title:
-    print(title+'\t1.0\t'+','.join(links))
+    print(title+'\t'+str(1.0)+'\t'+','.join(links))
