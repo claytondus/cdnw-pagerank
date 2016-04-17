@@ -4,30 +4,36 @@
 #PageRank
 #pagerank_reduce.py: reducer for pagerank stage
 
+#input one of these:
+#title ^^^ <set_of_links>
+#link title partial_rank
+
 import sys, re, string, os
 
 beta = float(0.85)
-current_link = ""
-links = list()
-newSum = 0
+current_title = ""
+link = ""
+current_sum = 0
+links = ""
+
 
 for line in sys.stdin:
-    link, title, rank_str, total_links_str = line.strip().split('\t')
-    rank = float(rank_str)
-    total_links = int(total_links_str)
-
-    newSum += rank / total_links
-
-    if current_link == link:
-        links.append(title)
+    first, second, third = line.strip().split('\t')
+    if second == '^^^':
+        current_title = first
+        links = third
+        current_sum = 0
     else:
-        if current_link:
-            newRank = beta * newSum + (1-beta)
-            print(current_link+'\t'+str(newRank)+'\t'+','.join(links))
-        links = list()
-        current_link = link
-        newSum = 0
+        link = first
+        partial_rank = float(third)
+        current_sum += partial_rank
+    if (link != current_title) and current_title and link:
+        newRank = beta * current_sum + (1-beta)
+        print(current_title+'\t'+str(newRank)+'\t'+links)
+        current_title = ""
+        current_sum = 0
 
-if current_link == link:
+
+if current_title:
     newRank = beta * newSum + (1-beta)
-    print(current_link+'\t'+str(newRank)+'\t'+','.join(links))
+    print(current_title+'\t'+str(newRank)+'\t'+links)

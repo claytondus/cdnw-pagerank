@@ -7,19 +7,23 @@
 import sys, re, string, os
 
 current_title = ""
-links = list()
+links = set()
 
 for line in sys.stdin:
     line = line.strip()
     title, link = line.split('\t',1)
 
+    #Don't add self-links
+    if title == link:
+        continue
+
     if current_title == title:
-        links.append(link)
+        links.add(link)
     else:
         if current_title:
             print(current_title+'\t1.0\t'+','.join(links))
-        links = list()
-        links.append(link)
+        links = set()
+        links.add(link)
         current_title = title
 
 if current_title == title:

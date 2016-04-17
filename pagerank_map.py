@@ -13,5 +13,8 @@ for line in sys.stdin:
     rank = float(rank_str)
     links = links_str.split(',')
 
+    #Save outlink list
+    print(title+'\t'+'^^^'+'\t'+links_str)
+
     for link in links:
-        print(link+'\t'+title+'\t'+str(rank)+'\t'+str(len(links)))
+        print(link+'\t'+title+'\t'+str(rank/len(links)))
