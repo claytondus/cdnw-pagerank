@@ -4,12 +4,14 @@
 #HADOOP_STREAMING=/usr/hdp/current/hadoop-mapreduce-client/hadoop-streaming.jar
 #HDFS_PATH=/user/$USER
 
+HDFS_PATH=.
+
 hadoop fs -mkdir hdfs/pa3/parse
 hadoop fs -rm -R hdfs/pa3/parse
 hadoop jar $HADOOP_STREAMING \
-  -files simplewiki-latest-all-titles,parse_map.py,parse_reduce.py \
+  -files simplewiki-latest-all-titles,parse_map.py,parse_reduce.py,mediawiki_start,mediawiki_end \
   -mapper parse_map.py \
   -reducer parse_reduce.py \
-  -input hdfs/pa3/in/simplewiki-head.xml \
+  -input $HDFS_PATH/hdfs/pa3/in/simplewiki-head-test.xml \
   -inputreader "StreamXmlRecordReader,begin=<page>,end=</page>" \
-  -output hdfs/pa3/parse
+  -output $HDFS_PATH/hdfs/pa3/parse
