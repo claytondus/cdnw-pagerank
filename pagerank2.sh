@@ -26,5 +26,5 @@ while [ "$COUNTER" -le "$ITERATIONS" ]; do
     COUNTER=$[$COUNTER + 1]
 done
 
-hadoop fs -get $HDFS_PATH/hdfs/pa3/$LAST pagerank_output
-sort -r -t. -k1,1n -k2,2n -o pagerank_sorted pagerank_output
+hadoop fs -get $HDFS_PATH/hdfs/pa3/$LAST/part-00000 pagerank_output
+python sort_pagerank.py > pagerank_sorted

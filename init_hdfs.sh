@@ -10,6 +10,6 @@ bunzip2 simplewiki-latest-pages-articles.xml.bz2
 cat simplewiki-latest-pages-articles.xml | ./split_map.py > simplewiki-oneline
 split -l 30000 simplewiki-oneline simplewiki-oneline-
 
-hadoop fs -mkdir -p hdfs/pa3/in
-hadoop fs -rm hdfs/pa3/in/*
+hadoop fs -mkdir -p $HDFS_PATH/hdfs/pa3/in
+hadoop fs -rm $HDFS_PATH/hdfs/pa3/in/*
 hadoop fs -put simplewiki-oneline-* $HDFS_PATH/hdfs/pa3/in/
