@@ -1,8 +1,5 @@
 #!/bin/bash
 
-HADOOP_STREAMING=/usr/prog/hadoop-2.7.2/share/hadoop/tools/lib/hadoop-streaming-2.7.2.jar
-HDFS_PATH=.
-
 hadoop fs -mkdir hdfs/pa3/pagerank
 
 if (($# > 0)); then
@@ -15,7 +12,7 @@ LAST="parse"
 COUNTER=1
 
 while [ "$COUNTER" -le "$ITERATIONS" ]; do
-    
+    echo "********Starting PageRank iteration $COUNTER*********"
     hadoop fs -mkdir hdfs/pa3/pagerank/$COUNTER
     hadoop fs -rm -R hdfs/pa3/pagerank/$COUNTER
     hadoop jar $HADOOP_STREAMING \
@@ -25,5 +22,9 @@ while [ "$COUNTER" -le "$ITERATIONS" ]; do
       -input $HDFS_PATH/hdfs/pa3/$LAST \
       -output $HDFS_PATH/hdfs/pa3/pagerank/$COUNTER
     LAST="pagerank/$COUNTER"
+    echo "********Finished PageRank iteration $COUNTER*********"
     COUNTER=$[$COUNTER + 1]
 done
+
+hadoop fs -get $HDFS_PATH/hdfs/pa3/$LAST pagerank_output
+sort -r -t. -k1,1n -k2,2n -o pagerank_sorted pagerank_output
