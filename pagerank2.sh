@@ -1,6 +1,6 @@
 #!/bin/bash
 
-hadoop fs -mkdir hdfs/pa3/pagerank
+hadoop fs -mkdir -p $HDFS_PATH/hdfs/pa3/pagerank
 
 if (($# > 0)); then
     ITERATIONS="$1"

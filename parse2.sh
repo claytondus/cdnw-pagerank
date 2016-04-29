@@ -9,3 +9,4 @@ hadoop jar $HADOOP_STREAMING \
   -reducer parse_reduce2.py \
   -input $HDFS_PATH/hdfs/pa3/in/simplewiki-oneline-* \
   -output $HDFS_PATH/hdfs/pa3/parse
+hadoop fs -get $HDFS_PATH/hdfs/pa3/parse/part-00000 parse_output
