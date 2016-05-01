@@ -2,7 +2,7 @@
 
 #COSC 560 Assignment 3
 #PageRank
-#sort_pagerank.py: Map XML pages onto a single line each
+#sort_pagerank.py: Export sorted list of pages by PageRank in descending order
 
 import sys, string
 from operator import itemgetter
