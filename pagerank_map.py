@@ -17,7 +17,7 @@ for line in sys.stdin:
         rank = float(rank_str)
         links = links_str.split(',')
 
-    #Save outlink list
+        #Save outlink list
         print(title+'\t'+'^^^'+'\t'+links_str)
 
         for link in links:
