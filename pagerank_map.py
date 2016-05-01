@@ -9,12 +9,16 @@ import sys, re, string, os
 
 
 for line in sys.stdin:
-    title, rank_str, links_str = line.strip().split('\t')
-    rank = float(rank_str)
-    links = links_str.split(',')
+    splits = line.strip().split('\t')
+    if len(splits) >= 3:
+        title = splits[0]
+        rank_str = splits[1]
+        links_str = splits[2]
+        rank = float(rank_str)
+        links = links_str.split(',')
 
     #Save outlink list
-    print(title+'\t'+'^^^'+'\t'+links_str)
+        print(title+'\t'+'^^^'+'\t'+links_str)
 
-    for link in links:
-        print(link+'\t'+title+'\t'+str(rank/len(links)))
+        for link in links:
+            print(link+'\t'+title+'\t'+str(rank/len(links)))

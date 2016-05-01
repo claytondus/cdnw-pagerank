@@ -12,13 +12,13 @@ doc_start = "<page>"
 doc_end = "</page>"
 mediawiki_found = False
 
-
-for line in sys.stdin:
-    stripped = line.strip()
-    if stripped == doc_start or stripped != doc_end:
-        doc.write(stripped)
-    else:
-        doc.write(stripped)
-        print(doc.getvalue())
-        doc.close()
-        doc = cStringIO.StringIO()
+with open('simplewiki-latest-pages-articles.xml', 'r') as wiki_xml:
+    for line in wiki_xml:
+        stripped = line.strip()
+        if stripped == doc_start or stripped != doc_end:
+            doc.write(stripped)
+        else:
+            doc.write(stripped)
+            print(doc.getvalue())
+            doc.close()
+            doc = cStringIO.StringIO()

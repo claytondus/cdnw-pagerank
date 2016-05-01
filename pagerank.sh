@@ -1,16 +1,30 @@
-#!/bin/sh
-#Run pagerank algorithm
+#!/bin/bash
 
-#HADOOP_STREAMING=/usr/hdp/current/hadoop-mapreduce-client/hadoop-streaming.jar
-#HDFS_PATH=/user/$USER
+hadoop fs -mkdir -p $HDFS_PATH/hdfs/pa3/pagerank
 
-HDFS_PATH=.
+if (($# > 0)); then
+    ITERATIONS="$1"
+else
+    ITERATIONS=1
+fi
 
-hadoop fs -mkdir hdfs/pa3/pagerank
-hadoop fs -rm -R hdfs/pa3/pagerank
-hadoop jar $HADOOP_STREAMING \
-  -files pagerank_map.py,pagerank_reduce.py \
-  -mapper pagerank_map.py \
-  -reducer pagerank_reduce.py \
-  -input $HDFS_PATH/hdfs/pa3/parse/part-00000 \
-  -output $HDFS_PATH/hdfs/pa3/pagerank
+LAST="parse"
+COUNTER=1
+
+while [ "$COUNTER" -le "$ITERATIONS" ]; do
+    echo "********Starting PageRank iteration $COUNTER*********"
+    hadoop fs -mkdir hdfs/pa3/pagerank/$COUNTER
+    hadoop fs -rm -R hdfs/pa3/pagerank/$COUNTER
+    hadoop jar $HADOOP_STREAMING \
+      -files pagerank_map.py,pagerank_reduce.py \
+      -mapper pagerank_map.py \
+      -reducer pagerank_reduce.py \
+      -input $HDFS_PATH/hdfs/pa3/$LAST \
+      -output $HDFS_PATH/hdfs/pa3/pagerank/$COUNTER
+    LAST="pagerank/$COUNTER"
+    echo "********Finished PageRank iteration $COUNTER*********"
+    COUNTER=$[$COUNTER + 1]
+done
+
+hadoop fs -get $HDFS_PATH/hdfs/pa3/$LAST/part-00000 pagerank_output
+python sort_pagerank.py > pagerank_sorted

@@ -18,22 +18,26 @@ links = ""
 
 
 for line in sys.stdin:
-    first, second, third = line.strip().split('\t')
-    if second == '^^^':
-        current_title = first
-        links = third
-        current_sum = 0
-    else:
-        link = first
-        partial_rank = float(third)
-        current_sum += partial_rank
-    if (link != current_title) and current_title and link:
-        newRank = beta * current_sum + (1-beta)
-        print(current_title+'\t'+str(newRank)+'\t'+links)
-        current_title = ""
-        current_sum = 0
+    splits = line.strip().split('\t')
+    if len(splits) >= 3:
+        first = splits[0]
+        second = splits[1]
+        third = splits[2]
+        if second == '^^^':
+            current_title = first
+            links = third
+            current_sum = 0
+        else:
+            link = first
+            partial_rank = float(third)
+            current_sum += partial_rank
+        if (link != current_title) and current_title and link:
+            newRank = beta * current_sum + (1-beta)
+            print(current_title+'\t'+str(newRank)+'\t'+links)
+            current_title = ""
+            current_sum = 0
 
 
 if current_title:
-    newRank = beta * newSum + (1-beta)
+    newRank = beta * current_sum + (1-beta)
     print(current_title+'\t'+str(newRank)+'\t'+links)

@@ -62,3 +62,19 @@ target/
 .ipynb_checkpoints
 
 in/
+hdfs/
+cluster/
+
+pagerank_map_out
+pagerank_map_out_sorted
+pagerank_output
+pagerank_output_2
+pagerank_reduce_2
+pagerank_reduce_out
+pagerank_sorted
+parse_map2_profile
+parse_map_out
+parse_map_output
+parse_reduce_out
+simplewiki-latest-all-titles
+simplewiki-latest-pages-articles.xml
